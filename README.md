@@ -16,9 +16,9 @@ A lightweight, self-contained **WebGL 3D endless highway racer** with a responsi
 
 Open `index.html` in Chrome, Edge, or Firefox. Alternatively run `python -m http.server 8080` and visit `http://localhost:8080`.
 
-Desktop: A/D or left/right to steer, Space/Up for nitro, P/Escape to pause. Mobile: touch controls and horizontal swipes.
+Desktop: A/D or left/right to steer, Space/Up for nitro, P/Escape to pause. Mobile: touch controls and horizontal swipes. Use the pre-race setup to choose tracks, modes, quality and separate music/effects switches.
 
-Requires WebGL. The game currently stores its best score in localStorage and does not use remote libraries, ads, or a backend.
+Requires WebGL. The game currently saves best score, garage ownership, credits, progression and settings in localStorage. It does not use remote libraries, ads, or a backend.
 
 ## Deploy (Cloudflare Pages — recommended for monetized hosting)
 
@@ -45,9 +45,25 @@ Import `Avi-2024/Rush-3D-Gameplay` at https://vercel.com/new. Choose **Other** f
 
 Read [ADSENSE_SETUP.md](ADSENSE_SETUP.md). **Ads are not activated.** Do not paste fake publisher IDs, show regular AdSense units within the active game, encourage clicks, or request interstitials during continuous gameplay. Obtain your own approved AdSense publisher identifier first.
 
+## Gameplay upgrade (October 18, 2026)
+
+- **Six original sports cars:** Vortex, Blaze, Solar, Nova, Phantom, Viper; five are unlockable with local garage credits.
+- **Persistent progression:** credits from distance, coins, daily challenges, achievements and four milestone missions; save data stored in localStorage.
+- **Three visual environments:** neon city, sunset highway and animated rainstorm. These are thematic variations of the same highway geometry, not separate full racing circuits.
+- **Two modes:** Endless and 90-second Sprint (against the clock, not multiplayer).
+- **Audio:** original procedural synth BGM, an engine layer and coin/collision effects with independent Music/Effects toggles, saved across visits. Audio requires a user gesture.
+- **Graphics:** Auto, Battery and Quality render-resolution options, with reduced scene detail on Battery; WebGL context loss handling.
+- **Effects:** six stylized car meshes, reflective roadway lights, nitro glow and flame effects, collision screen shake and flash.
+
+### Manual smoke test
+
+Open `play.html`, verify menu, select track and mode, toggle Music and Effects, start, steer and boost, crash, then restart. Check credits and achievements persist after reloading. Test all three tracks and quality settings in Chrome/Edge and on a touch browser. Browser audio must be started with a click. `window.nightRush3D.getState()` exposes a read-only runtime summary for debugging.
+
+**Implementation boundaries:** Road movement is lane-based, not full free-steering physics. The game is a standalone static WebGL app, not yet an online leaderboard, multiplayer title or AdSense-approved property.
+
 ## Planned improvements
 
-New car/track variety, more polished physics, missions, garage, collectibles, procedural levels, accessibility, performance options and analytics with proper disclosure.
+More detailed car meshes and driving physics, additional modes and environment variety, stronger accessibility, optional analytics with proper disclosure and cross-device cloud saves (future backend required).
 
 ## License
 
