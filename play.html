@@ -215,7 +215,7 @@ g.drifting=activeDrift;g.heading+=(Math.max(-.27,Math.min(.27,-g.vx*.028+(g.drif
 g.roll+=(Math.max(-.115,Math.min(.115,-g.vx*.015))-g.roll)*Math.min(1,dt*7);
 g.pitch+=((g.boost?-.035:.012)-g.pitch)*Math.min(1,dt*4.2);
 g.wheelSpin=(g.wheelSpin+forward/.51)%(Math.PI*2);g.suspension=Math.sin(g.t*(6+g.speed*.045))*(.022+(g.drifting?.020:.009));
-if(g.drifting){g.skidClock+=dt;if(g.skidClock>.07){g.skidClock=0;g.skids.push({x:g.x-.98,z:4.7,life:1},{x:g.x+.98,z:4.7,life:1});if(g.skids.length>56)g.skids.splice(0,g.skids.length-56)}}else g.skidClock=0;
+if(g.drifting&&settings.quality!=='low'){g.skidClock+=dt;if(g.skidClock>.085){g.skidClock=0;g.skids.push({x:g.x-.98,z:4.7,life:1},{x:g.x+.98,z:4.7,life:1});if(g.skids.length>36)g.skids.splice(0,g.skids.length-36)}}else g.skidClock=0;
 for(let i=g.skids.length-1;i>=0;i--){const mark=g.skids[i];mark.z+=forward;mark.life-=dt;if(mark.z>19||mark.life<=0)g.skids.splice(i,1)}
 g.lane=Math.max(0,Math.min(3,Math.round((g.targetX+8.4)/5.6)));
 g.trail=Math.max(0,g.trail-dt);g.nextSpawn-=dt;if(g.nextSpawn<=0){spawn();g.nextSpawn=Math.max(.92,1.85-g.t*.007)*rand(.88,1.1)}
@@ -230,7 +230,7 @@ function render(){resize();const aspect=canvas.width/canvas.height,portrait=aspe
  for(let side of [-1,1]){for(let i=0;i<(settings.quality==='low'?26:52);i++){let z=18-i*8.5+(distance%8.5);draw(rail,trs(side*13.3,.36,z))}for(let i=0;i<34;i++){const z=19-i*12+(distance%12);draw(roadLight,trs(side*11.93,.047,z))}for(let i=0;i<(settings.quality==='low'?7:14);i++){const z=10-i*(settings.quality==='low'?60:30)+(distance%30);if(settings.track==='sunset')draw(sunsetPalm,trs(side*21.0,0,z));else draw(lantern[side<0?0:1],trs(side*14.5,0,z))}}
  for(let i=0;i<(settings.quality==='low'?20:buildings.length);i++){if(settings.track==='sunset'&&i%2)continue;const b=buildings[i],range=460;let z=(((b.z+distance*.70+400)%range+range)%range)-400;draw(b.mesh,trs(b.x,-.05,z,b.rotation))}
  for(let i=0;i<(settings.quality==='low'?2:5);i++)if(settings.track!=='sunset')draw(arch,trs(0,0,20-i*115+(distance%115)));
- for(const mark of g.skids)draw(skidMark,trs(mark.x,.037,mark.z));
+ if(settings.quality!=='low')for(const mark of g.skids)draw(skidMark,trs(mark.x,.037,mark.z));
   for(const o of g.objects){const x=laneCenters[o.lane];if(o.type==='car'){draw(shadow,trs(x,.019,o.z,0,0,.95,1,.9));draw(trafficMeshes[o.style],trs(x,.18,o.z,Math.sin(g.clock*1.3+o.style)*.009))}else{draw(coinMesh,trs(x,2.2+Math.sin(g.clock*4+o.spin)*.2,o.z,g.clock*3.4+o.spin,0,1.15,1.15,1.15))}}
  const x=g.mode==='ready'?laneCenters[1]+Math.sin(g.clock*.6)*.10:g.x;
   draw(shadow,trs(x,.025,3.2,g.heading,0,1,1,1));
