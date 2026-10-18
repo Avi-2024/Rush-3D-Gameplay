@@ -9,7 +9,7 @@ assert.ok(src,'Game script missing');
 new vm.Script(src);
 function boot(data=new Map()){
  const nodes={},window={devicePixelRatio:1.5,innerWidth:450,handlers:{},addEventListener(k,fn){this.handlers[k]=fn}};
- let raf,notes=0,ctx;
+ let raf,notes=0,ctx,frameCount=0;
  const param=()=>({value:0,setValueAtTime(){},setTargetAtTime(){},exponentialRampToValueAtTime(){}});
  const soundNode=()=>({frequency:param(),gain:param(),connect(){return this},start(){notes++},stop(){}});
  window.AudioContext=class {constructor(){ctx=this;this.currentTime=0;this.state='running';this.destination={}}resume(){}createOscillator(){return soundNode()}createGain(){return soundNode()}createBiquadFilter(){return soundNode()}};
@@ -19,7 +19,7 @@ function boot(data=new Map()){
  const storage={getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,String(v))};
  const problems=[];
  vm.runInNewContext(src,{window,document,localStorage:storage,requestAnimationFrame:fn=>{raf=fn},console:{log(){},warn(...v){problems.push(v)},error(...v){problems.push(v)}},location:{reload(){}},Date,Math,Float32Array,Uint16Array,Set},{timeout:15000,filename:'play.html'});
- return {api:window.nightRush3D,nodes,data,tick(n){for(let i=0;i<n;i++){assert.ok(raf);if(ctx)ctx.currentTime+=.0167;raf((i+1)*16.7)}},get notes(){return notes},problems};
+ return {api:window.nightRush3D,nodes,data,tick(n){for(let i=0;i<n;i++){assert.ok(raf);if(ctx)ctx.currentTime+=.0167;raf((++frameCount)*16.7)}},get notes(){return notes},problems};
 }
 const data=new Map();
 const a=boot(data);
