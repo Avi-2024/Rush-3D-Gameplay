@@ -8,13 +8,13 @@ const src=html.split('<script>')[1]?.split('</script>')[0];
 assert.ok(src,'Game script missing');
 new vm.Script(src);
 function boot(data=new Map()){
- const nodes={},window={devicePixelRatio:1.5,innerWidth:450,addEventListener(){}};
+ const nodes={},window={devicePixelRatio:1.5,innerWidth:450,handlers:{},addEventListener(k,fn){this.handlers[k]=fn}};
  let raf,notes=0,ctx;
  const param=()=>({value:0,setValueAtTime(){},setTargetAtTime(){},exponentialRampToValueAtTime(){}});
  const soundNode=()=>({frequency:param(),gain:param(),connect(){return this},start(){notes++},stop(){}});
  window.AudioContext=class {constructor(){ctx=this;this.currentTime=0;this.state='running';this.destination={}}resume(){}createOscillator(){return soundNode()}createGain(){return soundNode()}createBiquadFilter(){return soundNode()}};
  const gl=new Proxy({}, {get(_obj,k){if(k==='getProgramParameter'||k==='getShaderParameter')return ()=>true;if(k==='createProgram'||k==='createShader'||k==='createBuffer')return ()=>({});if(k==='getUniformLocation')return ()=>({});if(k==='getAttribLocation')return ()=>0;if(typeof k==='string'&&k.toUpperCase()===k)return 1;return ()=>{}}});
- function el(id){let txt='';return {id,style:{},dataset:{},children:[],handlers:{},clientWidth:450,clientHeight:780,offsetWidth:1,classList:{add(){},remove(){}},setAttribute(){},addEventListener(k,fn){this.handlers[k]=fn},appendChild(x){this.children.push(x)},getContext(){return gl},get textContent(){return txt},set textContent(v){txt=String(v);if(txt==='')this.children=[]}}}
+ function el(id){let txt='';return {id,style:{},dataset:{},children:[],handlers:{},clientWidth:450,clientHeight:780,offsetWidth:1,classList:{add(){},remove(){},toggle(){},contains(){return false}},setAttribute(){},addEventListener(k,fn){this.handlers[k]=fn},appendChild(x){this.children.push(x)},getContext(){return gl},get textContent(){return txt},set textContent(v){txt=String(v);if(txt==='')this.children=[]}}}
  const document={getElementById(k){return nodes[k]??=(el(k))},createElement:el,addEventListener(){}};
  const storage={getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,String(v))};
  const problems=[];
@@ -26,9 +26,16 @@ const a=boot(data);
 assert.equal(a.nodes.garageGrid.children.length,6);
 assert.equal(a.api.getState().mode,'ready');
 a.api.start();a.tick(140);
-assert.ok(a.api.getState().distance>0);
+assert.ok(a.api.getState().distance>0);assert.equal(a.problems.length,0,JSON.stringify(a.problems));assert.ok(a.api.getState().wheelSpin>0,'Car wheels rotate with travel');
 assert.ok(a.notes>2,'background music should start on first user gesture');
 a.api.steer(1);assert.equal(a.api.getState().lane,2);
+a.tick(50);assert.equal(a.problems.length,0,JSON.stringify(a.problems));assert.ok(a.api.getState().x>-2.6,'Steering physically moves the car');
+a.nodes.driftBtn.handlers.pointerdown({pointerId:1,currentTarget:{setPointerCapture(){}}});
+a.api.steer(-1);a.tick(25);
+assert.equal(a.problems.length,0,JSON.stringify(a.problems));
+assert.equal(typeof a.api.getState().drifting,'boolean');
+a.nodes.driftBtn.handlers.pointerup();
+
 a.api.pause();assert.equal(a.api.getState().mode,'paused');
 a.api.pause();assert.equal(a.api.getState().mode,'running');
 a.api.debugCrash();assert.equal(a.api.getState().mode,'over');
@@ -49,4 +56,4 @@ const c=boot(data);
 c.nodes.garageGrid.children[1].handlers.click();
 assert.equal(c.api.getState().car,1);
 assert.equal(c.api.getState().credits,150);
-console.log('PASS game boot, driving, BGM, garage, persistence, settings and collision.');
+console.log('PASS game boot, momentum steering, wheel rotation, drift controls, BGM, garage, persistence, settings and collision.');
