@@ -20,14 +20,24 @@ Desktop: A/D or left/right to steer, Space/Up for nitro, P/Escape to pause. Mobi
 
 Requires WebGL. The game currently stores its best score in localStorage and does not use remote libraries, ads, or a backend.
 
-## Deploy (GitHub Pages)
+## Deploy (Cloudflare Pages — recommended for monetized hosting)
+
+1. Open https://dash.cloudflare.com/ and go to **Workers & Pages → Create application → Pages → Connect to Git**.
+2. Authorize GitHub and choose `Avi-2024/Rush-3D-Gameplay`.
+3. Set production branch to **main**, framework to **None**, build command to `exit 0` (or leave it blank), and build output directory to `.` (repository root).
+4. Click **Save and Deploy** and test the resulting `*.pages.dev` URL and `/play.html`.
+5. For AdSense, prefer a custom domain that you control, then update `sitemap.xml` and `robots.txt` to that exact public URL.
+
+**Hosting policy:** Vercel's free Hobby tier is non-commercial only; use a suitable commercial plan if monetizing on Vercel. GitHub Pages has business-hosting restrictions, so do not rely on it as your long-term commercial advertising host. Review your chosen host's current terms.
+
+## Deploy (GitHub Pages — demo/testing)
 
 1. Open [repository Settings → Pages](https://github.com/Avi-2024/Rush-3D-Gameplay/settings/pages).
 2. Under **Build and deployment**, choose **Deploy from a branch**, branch **main**, folder **/(root)**, then **Save**.
 3. After the site publishes, check `https://avi-2024.github.io/Rush-3D-Gameplay/` and `https://avi-2024.github.io/Rush-3D-Gameplay/play.html`.
 4. If you use a custom domain later, update sitemap, metadata and AdSense site settings to match the final domain.
 
-## Deploy (Vercel)
+## Deploy (Vercel — commercial plan if monetized)
 
 Import `Avi-2024/Rush-3D-Gameplay` at https://vercel.com/new. Choose **Other** framework with no build step and repository root as output/root. Vercel may request an explicit output directory (use `.` for static files) depending on UI. Check the deployment before adding a custom domain.
 
