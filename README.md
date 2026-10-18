@@ -16,7 +16,7 @@ A lightweight, self-contained **WebGL 3D endless highway racer** with a responsi
 
 Open `index.html` in Chrome, Edge, or Firefox. Alternatively run `python -m http.server 8080` and visit `http://localhost:8080`.
 
-Desktop: A/D or left/right to steer, Space/Up for nitro, P/Escape to pause. Mobile: touch controls and horizontal swipes. Use the pre-race setup to choose tracks, modes, quality and separate music/effects switches.
+Desktop: tap A/D or left/right to change lanes, hold the keys for continuous arcade steering, hold Shift while turning to drift, Space/Up for nitro, P/Escape to pause. Mobile: tap or hold steering buttons, hold DRIFT, swipe on the road to nudge lanes, hold NITRO. Use the pre-race setup to choose tracks, modes, quality and separate music/effects switches.
 
 Requires WebGL. The game currently saves best score, garage ownership, credits, progression and settings in localStorage. It does not use remote libraries, ads, or a backend.
 
@@ -44,6 +44,15 @@ Import `Avi-2024/Rush-3D-Gameplay` at https://vercel.com/new. Choose **Other** f
 ## Monetization
 
 Read [ADSENSE_SETUP.md](ADSENSE_SETUP.md). **Ads are not activated.** Do not paste fake publisher IDs, show regular AdSense units within the active game, encourage clicks, or request interstitials during continuous gameplay. Obtain your own approved AdSense publisher identifier first.
+
+## Driving dynamics pass (October 18, 2026)
+
+- Tap left/right to choose the next traffic lane; hold steering input to move continuously toward the highway edge.
+- Momentum-based lateral spring/damping for smoother steering and camera motion.
+- Handbrake drift with **Shift** on desktop or **DRIFT** on touch; body leans, rear tires draw capped skid traces, and small sparks appear during drifts.
+- Player wheels are separate WebGL meshes that rotate with distance, turn at the front axle and move with light suspension bounce. Garage models and unlocks remain unchanged.
+- Sunset roadside uses low-poly palms; neon/rain environments retain streetlamps. Battery graphics mode skips skid traces and sparks.
+- This is a **stylized arcade driving model**, not simulation-grade tire physics or unique circuit racing. Verify visuals and performance on real devices.
 
 ## Gameplay upgrade (October 18, 2026)
 

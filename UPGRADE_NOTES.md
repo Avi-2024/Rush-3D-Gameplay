@@ -21,6 +21,14 @@ The music is generated on-device using the Web Audio API. Because browser autopl
 - Music, graphics and controls should be checked on actual target devices before public promotion.
 - **AdSense is not activated.** Read `ADSENSE_SETUP.md`, set up an appropriate domain and policy/consent handling, and apply for approval before adding ad code.
 
+### Driving dynamics update
+
+- Momentum-based steering preserves lane taps and adds held inputs.
+- Shift / mobile Drift adds controlled sliding, chassis lean, small tire sparks, and skid marks.
+- Independent 3D wheel meshes rotate with travel distance and front wheels yaw while turning; chassis has subtle suspension bounce.
+- Sunset low-poly palms differentiate the road environment, while Battery graphics mode skips extra drift effects.
+- Full vehicle rigid-body physics, genuine racing circuits, and realistic tire/suspension deformation are not implemented yet.
+
 ### Next quality pass
 1. Realistic handling curve, wheel spinning, tire marks, collision damage state
 2. Additional track geometry/branches and proper weather particle GPU batches
